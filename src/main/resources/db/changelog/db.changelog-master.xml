@@ -1,0 +1,48 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="1" author="you">
+        <createTable tableName="users">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="surname" type="varchar(255)"/>
+            <column name="birth_date" type="date"/>
+            <column name="email" type="varchar(255)">
+                <constraints unique="true"/>
+            </column>
+            <column name="active" type="boolean"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+
+        <createIndex indexName="idx_users_email" tableName="users">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="2" author="you">
+        <createTable tableName="payment_cards">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user" references="users(id)"/>
+            </column>
+            <column name="number" type="varchar(255)"/>
+            <column name="holder" type="varchar(255)"/>
+            <column name="expiration_date" type="date"/>
+            <column name="active" type="boolean"/>
+            <column name="created_at" type="timestamp"/>
+            <column name="updated_at" type="timestamp"/>
+        </createTable>
+
+        <createIndex indexName="idx_payment_cards_number" tableName="payment_cards">
+            <column name="number"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
