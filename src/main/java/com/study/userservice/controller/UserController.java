@@ -3,14 +3,17 @@ package com.study.userservice.controller;
 import com.study.userservice.dto.PaymentCardDto;
 import com.study.userservice.dto.UserDto;
 import com.study.userservice.mapper.PaymentCardMapper;
+import com.study.userservice.entity.User;
 import com.study.userservice.mapper.UserMapper;
 import com.study.userservice.service.PaymentCardService;
 import com.study.userservice.service.UserService;
 import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.http.HttpStatus;
+
 
 @RestController
 @RequestMapping("/users")
@@ -31,11 +34,20 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto createUser(@RequestBody @Valid UserDto dto) {
-        return userMapper.toDto(
-                userService.createUser(
-                        userMapper.toEntity(dto)
-                )
+    public ResponseEntity<UserDto> create(
+            @RequestBody @Valid UserDto dto
+    ) {
+        User saved = userService.createUser(userMapper.toEntity(dto));
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userMapper.toDto(saved));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                userMapper.toDto(userService.getUserById(id))
         );
     }
 
@@ -48,7 +60,6 @@ public class UserController {
                         .toList()
         );
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(
@@ -78,5 +89,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 }
+
 
 
