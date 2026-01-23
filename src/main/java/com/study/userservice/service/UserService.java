@@ -11,9 +11,9 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    User createUser(User user);
-
     PaymentCard addCardToUser(Long userId, PaymentCard card);
+
+    User createUser(User user);
 
     User getUserById(Long id);
 
@@ -28,4 +28,6 @@ public interface UserService {
     User updateUser(Long id, UserDto dto);
 
     void deleteUser(Long id);
+
+    User getUserWithCards(Long userId);
 }
