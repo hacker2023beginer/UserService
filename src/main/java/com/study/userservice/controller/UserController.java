@@ -8,7 +8,6 @@ import com.study.userservice.mapper.UserMapper;
 import com.study.userservice.service.PaymentCardService;
 import com.study.userservice.service.UserService;
 import jakarta.validation.Valid;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -60,7 +59,7 @@ public class UserController {
                         .toList()
         );
     }
-
+    
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(
             @PathVariable Long id,
