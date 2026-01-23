@@ -26,4 +26,6 @@ public interface UserService {
     Page<User> getUsers(String name, String surname, Pageable pageable);
 
     User updateUser(Long id, UserDto dto);
+
+    void deleteUser(Long id);
 }
