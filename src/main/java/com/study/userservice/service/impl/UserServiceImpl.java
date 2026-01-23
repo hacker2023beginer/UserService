@@ -1,5 +1,6 @@
 package com.study.userservice.service.impl;
 
+import com.study.userservice.dto.UserDto;
 import com.study.userservice.entity.PaymentCard;
 import com.study.userservice.entity.User;
 import com.study.userservice.exception.UserException;
@@ -9,6 +10,7 @@ import com.study.userservice.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -81,5 +83,17 @@ public class UserServiceImpl implements UserService {
                 hasSurname(surname)
         );
         return userRepository.findAll(spec, pageable);
+    }
+
+    @Transactional
+    @Override
+    public User updateUser(Long id, UserDto dto) {
+        User user = getUserById(id);
+
+        user.setName(dto.getName());
+        user.setSurname(dto.getSurname());
+        user.setBirthDate(dto.getBirthDate());
+
+        return user;
     }
 }

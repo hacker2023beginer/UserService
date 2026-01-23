@@ -1,33 +1,35 @@
 package com.study.userservice.controller;
 
-import com.study.userservice.entity.User;
+import com.study.userservice.dto.UserDto;
+import com.study.userservice.mapper.UserMapper;
 import com.study.userservice.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
-    @GetMapping
-    public Page<User> getUsers(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String surname,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        return userService.getUsers(
-                name,
-                surname,
-                PageRequest.of(page, size)
+    @PostMapping
+    public UserDto createUser(@RequestBody @Valid UserDto dto) {
+        return userMapper.toDto(
+                userService.createUser(
+                        userMapper.toEntity(dto)
+                )
         );
     }
 }
+
 
