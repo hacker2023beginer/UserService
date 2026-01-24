@@ -5,6 +5,7 @@ import com.study.userservice.entity.PaymentCard;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+//через MapStruct переписать
 @Mapper(componentModel = "spring")
 public interface PaymentCardMapper {
 

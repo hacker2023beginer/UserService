@@ -25,6 +25,15 @@ public class PaymentCardDto {
     @NotNull
     private Long userId;
 
+    public PaymentCardDto(Long id, String number, String holder, LocalDate expirationDate, Boolean active, Long userId) {
+        this.id = id;
+        this.number = number;
+        this.holder = holder;
+        this.expirationDate = expirationDate;
+        this.active = active;
+        this.userId = userId;
+    }
+
     public Long getId() {
         return id;
     }
