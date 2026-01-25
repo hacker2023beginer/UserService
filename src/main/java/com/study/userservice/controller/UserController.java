@@ -59,7 +59,7 @@ public class UserController {
                         .toList()
         );
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(
             @PathVariable Long id,
