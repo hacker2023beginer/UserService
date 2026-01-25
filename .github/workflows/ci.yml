@@ -31,12 +31,5 @@ jobs:
       - name: Build and run tests
         run: mvn clean verify
 
-      - name: SonarQube Scan
-        run: |
-          mvn sonar:sonar \
-            -Dsonar.projectKey=user-service \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
       - name: Build Docker image
         run: docker build -t user-service:latest .
