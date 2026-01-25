@@ -19,4 +19,6 @@ public interface PaymentCardService {
     void deactivate(Long id);
 
     void delete(Long id);
+
+    List<PaymentCard> getCardsByUserId(Long userId);
 }

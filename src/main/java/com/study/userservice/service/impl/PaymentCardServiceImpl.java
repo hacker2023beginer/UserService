@@ -53,6 +53,12 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
+    public List<PaymentCard> getCardsByUserId(Long userId) {
+        return cardRepository.findByUserId(userId);
+    }
+
+
+    @Override
     public List<PaymentCard> getByUserId(Long userId) {
         return cardRepository.findByUserId(userId);
     }
