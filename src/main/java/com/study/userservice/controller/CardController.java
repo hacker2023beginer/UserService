@@ -1,6 +1,7 @@
 package com.study.userservice.controller;
 
 import com.study.userservice.dto.PaymentCardDto;
+import com.study.userservice.entity.PaymentCard;
 import com.study.userservice.mapper.PaymentCardMapper;
 import com.study.userservice.service.PaymentCardService;
 import jakarta.validation.Valid;
@@ -37,6 +38,17 @@ public class CardController {
                 mapper.toDto(cardService.getById(id))
         );
     }
+
+    @PreAuthorize("@securityService.canAccessCard(#id) or hasRole('ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<PaymentCardDto> update(
+            @PathVariable Long id,
+            @RequestBody @Valid PaymentCardDto dto
+    ) {
+        PaymentCard updated = cardService.update(id, dto);
+        return ResponseEntity.ok(mapper.toDto(updated));
+    }
+
 
     @PreAuthorize("@securityService.canAccessCard(#id)")
     @DeleteMapping("/{id}")

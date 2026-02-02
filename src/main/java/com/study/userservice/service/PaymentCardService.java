@@ -10,8 +10,6 @@ public interface PaymentCardService {
 
     PaymentCard getById(Long id);
 
-    List<PaymentCard> getByUserId(Long userId);
-
     PaymentCard update(Long id, PaymentCardDto dto);
 
     void activate(Long id);

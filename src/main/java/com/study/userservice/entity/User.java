@@ -12,11 +12,7 @@ import java.util.Set;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(
-        name = "users",
-        indexes = {
-                @Index(name = "idx_users_email", columnList = "email")
-        })
+@Table(name = "users")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 

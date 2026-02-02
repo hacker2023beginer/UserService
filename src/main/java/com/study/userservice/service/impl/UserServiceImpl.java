@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
     public User activateUser(Long id) {
         User user = getUserById(id);
         user.setActive(true);
+        userRepository.save(user);
         return userRepository.save(user);
     }
 
@@ -71,6 +72,7 @@ public class UserServiceImpl implements UserService {
     public User deactivateUser(Long id) {
         User user = getUserById(id);
         user.setActive(false);
+        userRepository.save(user);
         return userRepository.save(user);
     }
 
@@ -92,7 +94,9 @@ public class UserServiceImpl implements UserService {
 
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
-
+        user.setBirthDate(dto.getBirthDate());
+        user.setEmail(dto.getEmail());
+        userRepository.save(user);
         return user;
     }
 
@@ -108,16 +112,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable(value = "users", key = "#userId")
     public User getUserWithCards(Long userId) {
-        return userRepository.findById(userId)
+        return userRepository.findUserWithCards(userId)
                 .orElseThrow(() -> new UserException(userId.toString()));
-    }
-
-    @Override
-    @Transactional
-    public PaymentCard addCardToUser(Long userId, PaymentCard card) {
-        PaymentCardDto dto = mapper.toDto(card);
-        dto.setUserId(userId);
-        return paymentCardService.create(dto);
     }
 
 }

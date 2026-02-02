@@ -45,4 +45,10 @@
             <column name="number"/>
         </createIndex>
     </changeSet>
+
+    <changeSet id="3" author="you">
+        <createIndex indexName="idx_payment_cards_user_id" tableName="payment_cards">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

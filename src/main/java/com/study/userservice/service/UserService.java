@@ -11,8 +11,6 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    PaymentCard addCardToUser(Long userId, PaymentCard card);
-
     User createUser(User user);
 
     User getUserById(Long id);

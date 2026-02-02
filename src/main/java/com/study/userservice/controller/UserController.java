@@ -8,6 +8,8 @@ import com.study.userservice.mapper.UserMapper;
 import com.study.userservice.service.PaymentCardService;
 import com.study.userservice.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +64,18 @@ public class UserController {
                         .map(paymentCardMapper::toDto)
                         .toList()
         );
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<Page<UserDto>> getUsers(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String surname,
+            Pageable pageable
+    ) {
+        Page<User> users = userService.getUsers(name, surname, pageable);
+        Page<UserDto> dtoPage = users.map(userMapper::toDto);
+        return ResponseEntity.ok(dtoPage);
     }
 
     @PreAuthorize("#id == authentication.principal or hasRole('ADMIN')")

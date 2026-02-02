@@ -10,7 +10,7 @@ import java.security.Key;
 @Service
 public class JwtService {
 
-    private final Key key = Keys.hmacShaKeyFor("supersecretkeysupersecretkey123".getBytes());
+    private final Key key = Keys.hmacShaKeyFor("supersecretkeysupersecretkey1234567890".getBytes());
 
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()
