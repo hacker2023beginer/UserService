@@ -6,6 +6,7 @@ import com.study.userservice.service.PaymentCardService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,6 +30,7 @@ public class CardController {
                 .body(mapper.toDto(cardService.create(dto)));
     }
 
+    @PreAuthorize("@securityService.canAccessCard(#id)")
     @GetMapping("/{id}")
     public ResponseEntity<PaymentCardDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(
@@ -36,12 +38,14 @@ public class CardController {
         );
     }
 
+    @PreAuthorize("@securityService.canAccessCard(#id)")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         cardService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("@securityService.canAccessCard(#id)")
     @PatchMapping("/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable Long id) {
         cardService.activate(id);
