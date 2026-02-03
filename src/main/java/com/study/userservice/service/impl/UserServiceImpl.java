@@ -1,6 +1,5 @@
 package com.study.userservice.service.impl;
 
-import com.study.userservice.dto.PaymentCardDto;
 import com.study.userservice.dto.UserDto;
 import com.study.userservice.entity.PaymentCard;
 import com.study.userservice.entity.User;
@@ -30,7 +29,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PaymentCardRepository cardRepository;
     private final PaymentCardService paymentCardService;
-    private static final int USER_CARDS_MAX = 5;
 
     public UserServiceImpl(PaymentCardMapper mapper, UserRepository userRepository, PaymentCardRepository cardRepository, PaymentCardService paymentCardService) {
         this.mapper = mapper;
