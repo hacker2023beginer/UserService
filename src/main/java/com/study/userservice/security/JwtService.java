@@ -3,14 +3,25 @@ package com.study.userservice.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 
 @Service
 public class JwtService {
 
-    private final Key key = Keys.hmacShaKeyFor("supersecretkeysupersecretkey1234567890".getBytes());
+    @Value("${jwt.secret}")
+    private String secret;
+
+    private Key key;
+
+    @PostConstruct
+    private void init() {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public Claims extractClaims(String token) {
         return Jwts.parserBuilder()

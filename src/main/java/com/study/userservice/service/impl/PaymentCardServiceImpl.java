@@ -93,11 +93,10 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    @CacheEvict(value = "users", key = "#userId")
+    @CacheEvict(value = "users", key = "#card.user.id")
     @Transactional
     public void delete(Long id) {
         PaymentCard card = getById(id);
-        Long userId = card.getUser().getId();
         cardRepository.delete(card);
     }
 }

@@ -37,6 +37,7 @@ services:
 
       SPRING_DATA_REDIS_HOST: ${REDIS_HOST}
       SPRING_DATA_REDIS_PORT: ${REDIS_PORT}
+      JWT_SECRET: ${JWT_SECRET}
 
     restart: always
 

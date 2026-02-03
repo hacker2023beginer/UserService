@@ -145,8 +145,8 @@ class UserServiceImplTest {
     @Test
     void updateUser_notFound() {
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(UserException.class, () -> userService.updateUser(1L, new UserDto()));
+        UserDto userDto = new UserDto();
+        assertThrows(UserException.class, () -> userService.updateUser(1L, userDto));
     }
 
     @Test
