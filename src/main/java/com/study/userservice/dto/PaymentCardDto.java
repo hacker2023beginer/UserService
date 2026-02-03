@@ -34,6 +34,9 @@ public class PaymentCardDto {
         this.userId = userId;
     }
 
+    public PaymentCardDto() {
+    }
+
     public Long getId() {
         return id;
     }
