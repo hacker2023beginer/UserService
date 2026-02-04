@@ -1,5 +1,6 @@
 package com.study.userservice.service;
 
+import com.study.userservice.dto.UserDto;
 import com.study.userservice.entity.PaymentCard;
 import com.study.userservice.entity.User;
 import org.springframework.data.domain.Page;
@@ -23,4 +24,8 @@ public interface UserService {
     User deactivateUser(Long id);
 
     Page<User> getUsers(String name, String surname, Pageable pageable);
+
+    User updateUser(Long id, UserDto dto);
+
+    void deleteUser(Long id);
 }
