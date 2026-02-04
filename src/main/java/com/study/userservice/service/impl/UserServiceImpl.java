@@ -1,15 +1,22 @@
 package com.study.userservice.service.impl;
 
+import com.study.userservice.dto.PaymentCardDto;
 import com.study.userservice.dto.UserDto;
 import com.study.userservice.entity.PaymentCard;
 import com.study.userservice.entity.User;
 import com.study.userservice.exception.UserException;
+import com.study.userservice.mapper.PaymentCardMapper;
 import com.study.userservice.repository.PaymentCardRepository;
 import com.study.userservice.repository.UserRepository;
+import com.study.userservice.service.PaymentCardService;
 import com.study.userservice.service.UserService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,38 +24,25 @@ import java.util.List;
 import static com.study.userservice.specification.UserSpecification.hasName;
 import static com.study.userservice.specification.UserSpecification.hasSurname;
 
+@Service
 public class UserServiceImpl implements UserService {
+    private final PaymentCardMapper mapper;
     private final UserRepository userRepository;
     private final PaymentCardRepository cardRepository;
-    private final int USER_CARDS_MIN = 5;
+    private final PaymentCardService paymentCardService;
+    private static final int USER_CARDS_MAX = 5;
 
-    public UserServiceImpl(UserRepository userRepository, PaymentCardRepository cardRepository) {
+    public UserServiceImpl(PaymentCardMapper mapper, UserRepository userRepository, PaymentCardRepository cardRepository, PaymentCardService paymentCardService) {
+        this.mapper = mapper;
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
+        this.paymentCardService = paymentCardService;
     }
 
     @Override
     public User createUser(User user) {
         user.setActive(true);
         return userRepository.save(user);
-    }
-
-    @Override
-    public PaymentCard addCardToUser(Long userId, PaymentCard card) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserException("User not found"));
-
-        if (user.getPaymentCards().size() >= USER_CARDS_MIN) {
-            throw new UserException("User cannot have more than 5 cards");
-        }
-
-        card.setUser(user);
-        card.setActive(true);
-
-        user.getPaymentCards().add(card);
-        userRepository.save(user);
-
-        return card;
     }
 
     @Override
@@ -63,6 +57,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CachePut(value = "users", key = "#id")
+    @Transactional
     public User activateUser(Long id) {
         User user = getUserById(id);
         user.setActive(true);
@@ -70,6 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CachePut(value = "users", key = "#id")
+    @Transactional
     public User deactivateUser(Long id) {
         User user = getUserById(id);
         user.setActive(false);
@@ -85,25 +83,41 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(spec, pageable);
     }
 
-    @Transactional
     @Override
+    @CachePut(value = "users", key = "#id")
+    @Transactional
     public User updateUser(Long id, UserDto dto) {
-        User user = getUserById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserException(id.toString()));
 
         user.setName(dto.getName());
         user.setSurname(dto.getSurname());
-        user.setBirthDate(dto.getBirthDate());
 
         return user;
     }
 
     @Override
+    @CacheEvict(value = "users", key = "#id")
     @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserException("User with id " + id + " not found"));
-
+                .orElseThrow(() -> new UserException(id.toString()));
         userRepository.delete(user);
+    }
+
+    @Override
+    @Cacheable(value = "users", key = "#userId")
+    public User getUserWithCards(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserException(userId.toString()));
+    }
+
+    @Override
+    @Transactional
+    public PaymentCard addCardToUser(Long userId, PaymentCard card) {
+        PaymentCardDto dto = mapper.toDto(card);
+        dto.setUserId(userId);
+        return paymentCardService.create(dto);
     }
 
 }
