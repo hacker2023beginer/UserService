@@ -46,7 +46,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserException("User not found"));
+                .orElseThrow(() -> new UserException("User not found by id"));
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException("User not found by email"));
     }
 
     @Override
@@ -114,4 +120,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserException(userId.toString()));
     }
 
+    @Override
+    public Boolean validate(Long id, String email){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserException("User not found by id"));
+        return user.getEmail().equals(email);
+    }
 }

@@ -35,7 +35,17 @@ public class UserController {
         this.paymentCardMapper = paymentCardMapper;
     }
 
-    @PreAuthorize("#dto.userId == authentication.principal or hasRole('ADMIN')")
+    //@PreAuthorize("#email == authentication.principal or hasRole('ADMIN')")
+    @GetMapping("/by-email")
+    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email){
+        User user = userService.getUserByEmail(email);
+        UserDto userDto = userMapper.toDto(user);
+        return ResponseEntity
+                .ok(userDto);
+    }
+
+
+    //@PreAuthorize("#dto.id == authentication.principal or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<UserDto> create(
             @RequestBody @Valid UserDto dto
@@ -96,6 +106,13 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    /** Internal endpoint for registration rollback - called by gateway when auth/register fails */
+    @DeleteMapping("/rollback/{id}")
+    public ResponseEntity<Void> rollback(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable Long id) {
@@ -108,6 +125,12 @@ public class UserController {
     public ResponseEntity<Void> deactivate(@PathVariable Long id) {
         userService.deactivateUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/validate")
+    public ResponseEntity<Boolean> validateUser(@RequestParam Long userId, @RequestParam String email){
+        boolean valid = userService.validate(userId, email);
+        return ResponseEntity.ok(valid);
     }
 }
 

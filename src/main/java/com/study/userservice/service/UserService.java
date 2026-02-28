@@ -15,6 +15,8 @@ public interface UserService {
 
     User getUserById(Long id);
 
+    User getUserByEmail(String email);
+
     List<PaymentCard> getCardsByUserId(Long userId);
 
     User activateUser(Long id);
@@ -28,4 +30,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     User getUserWithCards(Long userId);
+
+    Boolean validate(Long id, String email);
 }
