@@ -107,7 +107,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    /** Internal endpoint for registration rollback - called by gateway when auth/register fails */
     @DeleteMapping("/rollback/{id}")
     public ResponseEntity<Void> rollback(@PathVariable Long id) {
         userService.deleteUser(id);

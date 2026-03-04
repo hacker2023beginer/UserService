@@ -18,12 +18,7 @@ public class UserSecurity {
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
-
-        System.out.println("TOKEN USER ID: " + currentUserId);
-
         Long dbUserId = userService.getUserByEmail(email).getId();
-        System.out.println("DB USER ID: " + dbUserId);
-
         return dbUserId.equals(currentUserId);
     }
 }

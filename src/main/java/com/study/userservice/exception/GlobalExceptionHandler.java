@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleValidation(MethodArgumentNotValidException ex) {
         List<String> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
                 .map(e -> e.getField() + ": " + e.getDefaultMessage())
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(error(HttpStatus.BAD_REQUEST, "Validation error", "fieldErrors", fieldErrors));
     }

@@ -6,6 +6,9 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class UserSpecification {
 
+    private UserSpecification() {
+    }
+
     public static Specification<User> hasName(String name) {
         return (root, query, cb) ->
                 name == null ? null : cb.equal(root.get("name"), name);

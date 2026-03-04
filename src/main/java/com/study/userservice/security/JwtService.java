@@ -12,7 +12,6 @@ import java.security.Key;
 
 @Service
 public class JwtService {
-
     @Value("${jwt.secret}")
     private String secret;
 
@@ -21,8 +20,6 @@ public class JwtService {
     @PostConstruct
     private void init() {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        System.out.println("SECRET: " + secret);
-        System.out.println("USER-SERVICE KEY: " + java.util.Base64.getEncoder().encodeToString(key.getEncoded()));
     }
 
     public Claims extractClaims(String token) {

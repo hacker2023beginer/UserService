@@ -4,10 +4,8 @@ import com.study.userservice.dto.UserDto;
 import com.study.userservice.entity.PaymentCard;
 import com.study.userservice.entity.User;
 import com.study.userservice.exception.UserException;
-import com.study.userservice.mapper.PaymentCardMapper;
 import com.study.userservice.repository.PaymentCardRepository;
 import com.study.userservice.repository.UserRepository;
-import com.study.userservice.service.PaymentCardService;
 import com.study.userservice.service.UserService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -25,16 +23,13 @@ import static com.study.userservice.specification.UserSpecification.hasSurname;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private final PaymentCardMapper mapper;
     private final UserRepository userRepository;
     private final PaymentCardRepository cardRepository;
-    private final PaymentCardService paymentCardService;
 
-    public UserServiceImpl(PaymentCardMapper mapper, UserRepository userRepository, PaymentCardRepository cardRepository, PaymentCardService paymentCardService) {
-        this.mapper = mapper;
+
+    public UserServiceImpl(UserRepository userRepository, PaymentCardRepository cardRepository) {
         this.userRepository = userRepository;
         this.cardRepository = cardRepository;
-        this.paymentCardService = paymentCardService;
     }
 
     @Override
