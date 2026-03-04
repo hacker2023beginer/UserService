@@ -35,7 +35,8 @@ public class UserController {
         this.paymentCardMapper = paymentCardMapper;
     }
 
-    //@PreAuthorize("#email == authentication.principal or hasRole('ADMIN')")
+    //@PreAuthorize("#email == authentication.principal or hasRole('ADMIN'))
+    @PreAuthorize("@userSecurity.isOwnerByEmail(#email) or hasRole('ADMIN')")
     @GetMapping("/by-email")
     public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email){
         User user = userService.getUserByEmail(email);
