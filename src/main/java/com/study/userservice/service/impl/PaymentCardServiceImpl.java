@@ -33,7 +33,7 @@ public class PaymentCardServiceImpl implements PaymentCardService {
     }
 
     @Override
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = "users", key = "#dto.userId")
     @Transactional
     public PaymentCard create(PaymentCardDto dto) {
         User user = userRepository.findById(dto.getUserId())
@@ -63,41 +63,37 @@ public class PaymentCardServiceImpl implements PaymentCardService {
 
 
     @Override
-    public List<PaymentCard> getByUserId(Long userId) {
-        return cardRepository.findByUserId(userId);
-    }
-
-    @Override
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = "users", key = "#result.user.id")
     @Transactional
     public PaymentCard update(Long id, PaymentCardDto dto) {
         PaymentCard card = getById(id);
-
         card.setNumber(dto.getNumber());
         card.setHolder(dto.getHolder());
         card.setExpirationDate(dto.getExpirationDate());
-
+        cardRepository.save(card);
         return card;
     }
 
     @Override
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = "users", key = "#result.user.id")
     @Transactional
     public void activate(Long id) {
         PaymentCard card = getById(id);
         card.setActive(true);
+        cardRepository.save(card);
     }
 
     @Override
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = "users", key = "#result.user.id")
     @Transactional
     public void deactivate(Long id) {
         PaymentCard card = getById(id);
         card.setActive(false);
+        cardRepository.save(card);
     }
 
     @Override
-    @CacheEvict(value = "users", allEntries = true)
+    @CacheEvict(value = "users", key = "#card.user.id")
     @Transactional
     public void delete(Long id) {
         PaymentCard card = getById(id);
