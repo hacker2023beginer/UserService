@@ -11,11 +11,11 @@ import java.util.List;
 
 @Service
 public interface UserService {
-    PaymentCard addCardToUser(Long userId, PaymentCard card);
-
     User createUser(User user);
 
     User getUserById(Long id);
+
+    User getUserByEmail(String email);
 
     List<PaymentCard> getCardsByUserId(Long userId);
 
@@ -30,4 +30,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     User getUserWithCards(Long userId);
+
+    Boolean validate(Long id, String email);
 }
