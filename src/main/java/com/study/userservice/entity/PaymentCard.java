@@ -10,11 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(
-        name = "payment_cards",
-        indexes = {
-                @Index(name = "idx_payment_cards_number", columnList = "number")
-        })
+@Table(name = "payment_cards")
 public class PaymentCard {
 
     @Id
