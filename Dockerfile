@@ -27,6 +27,7 @@ USER appuser
 
 ENV SPRING_PROFILES_ACTIVE=docker
 
+#need to change 8080 -> 8082
 EXPOSE 8080
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
