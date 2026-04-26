@@ -84,4 +84,16 @@ public class UserDto {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthDate=" + birthDate +
+                ", email='" + email + '\'' +
+                ", active=" + active +
+                '}';
+    }
 }

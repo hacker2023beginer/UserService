@@ -41,12 +41,13 @@ public class UserController {
     public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email){
         User user = userService.getUserByEmail(email);
         UserDto userDto = userMapper.toDto(user);
+        System.out.println(userDto.toString());
         return ResponseEntity
                 .ok(userDto);
     }
 
 
-    //@PreAuthorize("#dto.id == authentication.principal or hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<UserDto> create(
             @RequestBody @Valid UserDto dto

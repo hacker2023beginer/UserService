@@ -25,8 +25,8 @@ RUN chown -R appuser:appgroup /app
 
 USER appuser
 
-ENV SPRING_PROFILES_ACTIVE=docker
+ENV SPRING_PROFILES_ACTIVE=k8s
 
-EXPOSE 8080
+EXPOSE 8082
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
