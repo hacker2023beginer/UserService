@@ -1,5 +1,3 @@
-
-**2. UserService**
 # User Service
 
 User Service stores and manages user profiles and payment cards. It also validates users for other services and protects user-related operations with JWT-based authorization.
